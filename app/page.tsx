@@ -1,23 +1,289 @@
+import Image from "next/image";
+import { Container } from "@/components/layout/container";
+import { Button } from "@/components/ui/button";
+import { BrandTicker } from "@/components/sections/brand-ticker";
+import { CaseStudyCard } from "@/components/sections/case-study-card";
+import { TestimonialCard } from "@/components/sections/testimonial-card";
+import { CtaSection } from "@/components/sections/cta-section";
+
+const CASE_STUDIES = [
+  {
+    title: "Homely Place",
+    description:
+      "We built an Airbnb-style coworking booking platform that enabled teams to discover and book shared workspaces, launched from idea to live product in just 48 hours.",
+    image: "/images/case-study-1.jpg",
+    href: "https://homely.place/",
+    deliveryTime: "48 hours",
+  },
+  {
+    title: "Med Clear",
+    description:
+      "We delivered a compliant medical certificate marketplace connecting businesses through consent-based workflows, enabling instant vetting and real transactions within 72 hours.",
+    image: "/images/case-study-2.jpg",
+    href: "#",
+    deliveryTime: "72 hours",
+  },
+  {
+    title: "Method Loop",
+    description:
+      "We created a phygital platform where physical card decks unlock premium digital resources, allowing users to access tools and templates within 80 hours of concept to launch.",
+    image: "/images/case-study-3.jpg",
+    href: "https://methodloop.com/",
+    deliveryTime: "80 hours",
+  },
+];
+
+const HOW_IT_WORKS = [
+  {
+    number: "01",
+    title: "Build What Your Users Actually Want",
+    description:
+      '60-90 minutes requirements call to strip away the fluff and nail your vision, users, solution and process. No endless meetings. Just a bulletproof plan that gets real users saying "finally!"',
+  },
+  {
+    number: "02",
+    title: "Have Real User On Your App In Days Not Weeks Or Months",
+    description:
+      "While your competitors are still wireframing, you'll have real users clicking, testing, and giving feedback. We handle the tech. You get the validation.",
+  },
+  {
+    number: "03",
+    title: "Turn Real User Feedback Into Real Growth",
+    description:
+      'Know exactly what delights your users instead of guessing. Real feedback from real people using your real product. No more "will they love it?" - they\'ll show you. That\'s real validation.',
+  },
+];
+
+const TEAM = [
+  {
+    name: "Anton",
+    role: "Sr. User Experience Designer",
+    bio: "With over 12-years experience as a UX designer and Product Manager, Anton loves building fast, user-centric, AI-powered MVPs. His focus is startups, product-market-fit and building and scaling products with speed and precision.",
+    image: "/images/avatar-1.webp",
+  },
+  {
+    name: "Tanuj",
+    role: "Full-Stack Developer, AI Engineer",
+    bio: "Tanuj is a founder and a detail oriented techie! He started his career 8 years ago where he worked with Fortune 500 and National brands in innovation, technology, strategy, and new venture.",
+    image: "/images/avatar-2.webp",
+  },
+];
+
 export default function LandingPage() {
   return (
-    <main>
-      <section className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <h1 className="font-inter-tight text-5xl font-semibold italic">
-            MVP Gurus
+    <>
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-white pb-20 pt-12">
+        <Container className="text-center">
+          <h1 className="mx-auto max-w-4xl font-inter-tight text-4xl font-semibold leading-tight tablet:text-5xl desktop:text-6xl">
+            Give Us 5 Days And We&apos;ll Deliver Your Launch-Ready MVP Or{" "}
+            <span className="text-primary">You Don&apos;t Pay!</span>
           </h1>
-          <p className="mt-4 text-muted-secondary">
-            Give Us 5 Days And We&apos;ll Deliver Your Launch-Ready MVP Or You
-            Don&apos;t Pay!
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-secondary">
+            AI may get you started but we&apos;re here for step 2 and beyond.
           </p>
-          <a
-            href="/chat-room"
-            className="mt-8 inline-block rounded-pill bg-black px-8 py-3 text-white shadow-button"
-          >
-            Get Started
-          </a>
-        </div>
+          <Button href="/register" variant="primary" size="lg" className="mt-8">
+            Get Started Today
+          </Button>
+
+          {/* Social proof */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                <Image
+                  src="/images/avatar-1.webp"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="rounded-full border-2 border-white"
+                />
+                <Image
+                  src="/images/avatar-2.webp"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="rounded-full border-2 border-white"
+                />
+                <Image
+                  src="/images/avatar-3.webp"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="rounded-full border-2 border-white"
+                />
+              </div>
+              <span className="text-sm font-medium">
+                <strong className="text-2xl">80+</strong>
+              </span>
+            </div>
+            <div className="text-sm font-medium">
+              <strong className="text-2xl">4.5+</strong>
+              <span className="ml-1 text-primary-gold">★</span>
+            </div>
+            <div className="text-sm text-muted-secondary">
+              <strong className="text-lg font-medium text-foreground">
+                1,000+
+              </strong>{" "}
+              Customer joined
+            </div>
+          </div>
+
+          {/* Hero image */}
+          <div className="relative mx-auto mt-12 max-w-4xl">
+            <Image
+              src="/images/hero-mockup.png"
+              alt="MVP Gurus platform preview"
+              width={1200}
+              height={600}
+              className="rounded-card"
+              priority
+            />
+          </div>
+        </Container>
       </section>
-    </main>
+
+      {/* ── Brand Ticker ── */}
+      <BrandTicker />
+
+      {/* ── About ── */}
+      <section id="about" className="bg-white py-20">
+        <Container>
+          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
+            About
+          </p>
+          <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl desktop:text-5xl">
+            We Rapidly Build MVP Software For Your Business
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-center text-muted-secondary">
+            Tired of wrangling with AI or vibe code or dealing with developers;
+            endless delays, overpromises, and &ldquo;we&apos;ll update you
+            soon&rdquo; excuses? Here&apos;s the brutal truth: Every day you
+            wait, someone else is building YOUR idea.
+          </p>
+        </Container>
+      </section>
+
+      {/* ── Case Studies ── */}
+      <section id="our-project" className="bg-surface-gray py-20">
+        <Container>
+          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
+            Our Work
+          </p>
+          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
+            Our Project
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+            A collection of projects we&apos;ve delivered with purpose and
+            precision.
+          </p>
+          <div className="mt-12 grid gap-8 tablet:grid-cols-2 desktop:grid-cols-3">
+            {CASE_STUDIES.map((study) => (
+              <CaseStudyCard key={study.title} {...study} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── How It Works ── */}
+      <section id="howitwork" className="bg-surface-light-purple py-20">
+        <Container>
+          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
+            How it work
+          </p>
+          <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl">
+            You Don&apos;t Need 3 Months And $50K+ To Validate Your Ideas
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+            Launch fast, get real users, and validate your product in days not
+            months.
+          </p>
+          <div className="mt-12 grid gap-8 tablet:grid-cols-3 desktop:grid-cols-3">
+            {HOW_IT_WORKS.map((step) => (
+              <div
+                key={step.number}
+                className="flex flex-col gap-4 rounded-card bg-white p-8"
+              >
+                <span className="font-inter-tight text-5xl font-semibold text-accent-purple">
+                  {step.number}
+                </span>
+                <h3 className="font-inter-tight text-xl font-semibold">
+                  {step.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-secondary">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Team ── */}
+      <section className="bg-white py-20">
+        <Container>
+          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
+            Meet our team
+          </p>
+          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
+            The Team Delivering Your MVP...
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+            A proven team of product, design, and engineering experts focused on
+            speed and validation.
+          </p>
+          <div className="mt-12 grid gap-8 tablet:grid-cols-2 desktop:grid-cols-2">
+            {TEAM.map((member) => (
+              <div
+                key={member.name}
+                className="flex flex-col items-center gap-4 rounded-card bg-surface-gray p-8 text-center"
+              >
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  width={80}
+                  height={80}
+                  className="rounded-full"
+                />
+                <div>
+                  <h3 className="font-inter-tight text-xl font-semibold">
+                    Meet {member.name}
+                  </h3>
+                  <p className="text-sm text-accent-purple">{member.role}</p>
+                </div>
+                <p className="text-sm leading-relaxed text-muted-secondary">
+                  {member.bio}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Testimonial ── */}
+      <section className="bg-surface-warm py-20">
+        <Container>
+          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
+            Testimonials
+          </p>
+          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
+            What Our Latest Customer Has To Say
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+            Real feedback from our newest customers
+          </p>
+          <div className="mx-auto mt-12 max-w-2xl">
+            <TestimonialCard
+              quote="My business partner and I approached MVP Guru for literally the quickest turnaround of a fencing lead-gen software. We got 3 customers in a week and the first covered the MVP costs (and then some). Thank you for taking us on."
+              name="Louis W."
+              role="Founder"
+              image="/images/testimonial-photo.webp"
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* ── CTA ── */}
+      <CtaSection />
+    </>
   );
 }
