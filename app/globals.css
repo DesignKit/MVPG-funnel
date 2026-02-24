@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* ── Design tokens from Framer export ── */
+@theme {
+  /* Fonts */
+  --font-geist: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-inter-tight: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+
+  /* Primary */
+  --color-primary: #e88146;
+  --color-primary-gold: #FFB853;
+  --color-primary-hover: #d4703a;
+
+  /* Accent */
+  --color-accent-purple: #9563ff;
+  --color-accent-lavender: #d1d0fc;
+  --color-accent-peach: #fcdcd1;
+  --color-accent-pink: #ed81ff;
+
+  /* Surfaces */
+  --color-surface-purple: #fef2ff;
+  --color-surface-light-purple: #f6f3fe;
+  --color-surface-gray: #f6f7f9;
+  --color-surface-warm: #fff3ef;
+  --color-surface-yellow: #fffee9;
+
+  /* Text */
+  --color-foreground: #111111;
+  --color-muted: #5e5f5c;
+  --color-muted-secondary: #696969;
+
+  /* Border */
+  --color-border: #e5e5e5;
+
+  /* Border radii */
+  --radius-pill: 100px;
+  --radius-card: 20px;
+
+  /* Shadows */
+  --shadow-card: rgba(0, 0, 0, 0.12) 0px 40px 40px 0px;
+  --shadow-button: rgba(255, 255, 255, 0.08) 0px 17.5px 35px 0px inset,
+    rgba(255, 255, 255, 0.03) 0px -4px 6px 0px inset;
+
+  /* Breakpoints (matching Framer) */
+  --breakpoint-tablet: 810px;
+  --breakpoint-desktop: 1440px;
+
+  /* Animations */
+  --animate-scroll: scroll 30s linear infinite;
+}
+
+/* ── Keyframes ── */
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ── Base styles ── */
+@layer base {
+  body {
+    font-family: var(--font-inter);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
