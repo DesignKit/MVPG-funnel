@@ -5,19 +5,33 @@ import { useRouter } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { BrandTicker } from "@/components/sections/brand-ticker";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
+import { submitRegistration } from "@/lib/actions/register";
+import { useFunnelProgress } from "@/lib/hooks/use-funnel-progress";
 
 const STEPS = [1, 2, 3, 4, 5, 6];
 const CURRENT_STEP = 2;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { sessionId, setRegistrationId } = useFunnelProgress();
   const [ideaDescription, setIdeaDescription] = useState("");
   const [additionalExpectations, setAdditionalExpectations] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!ideaDescription.trim()) return;
-    // TODO: persist to Supabase in Phase 7
+    if (!ideaDescription.trim() || submitting) return;
+    setSubmitting(true);
+    try {
+      const reg = await submitRegistration(
+        sessionId,
+        ideaDescription.trim(),
+        additionalExpectations.trim() || null
+      );
+      setRegistrationId(reg.id);
+    } catch {
+      // Continue even if Supabase fails — tables may not exist yet
+    }
     router.push("/schedule");
   }
 
@@ -71,10 +85,10 @@ export default function RegisterPage() {
             />
             <button
               type="submit"
-              disabled={!ideaDescription.trim()}
+              disabled={!ideaDescription.trim() || submitting}
               className="mt-2 w-full rounded-pill bg-black py-4 text-white shadow-button transition-opacity hover:opacity-90 disabled:opacity-40"
             >
-              Submit &amp; Continue
+              {submitting ? "Submitting..." : "Submit & Continue"}
             </button>
           </form>
         </Container>

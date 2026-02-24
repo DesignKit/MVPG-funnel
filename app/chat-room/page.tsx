@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { cn } from "@/lib/utils";
+import { createChatSession, submitChatAnswer, completeChatSession } from "@/lib/actions/chat";
+import { useFunnelProgress } from "@/lib/hooks/use-funnel-progress";
 
 const QUESTIONS = [
   { key: "problem", text: "What problem are you solving?" },
@@ -15,11 +17,24 @@ const QUESTIONS = [
 type QuestionKey = (typeof QUESTIONS)[number]["key"];
 
 export default function ChatRoomPage() {
+  const router = useRouter();
+  const { sessionId, setSessionId } = useFunnelProgress();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [activeQuestion, setActiveQuestion] = useState<QuestionKey | null>(
     null
   );
   const [inputValue, setInputValue] = useState("");
+
+  // Create a session on first visit
+  useEffect(() => {
+    if (!sessionId) {
+      createChatSession().then((session) => {
+        setSessionId(session.id);
+      }).catch(() => {
+        // Supabase tables may not exist yet — continue without persistence
+      });
+    }
+  }, [sessionId, setSessionId]);
 
   const answeredCount = Object.keys(answers).length;
   const allAnswered = answeredCount === QUESTIONS.length;
@@ -31,8 +46,15 @@ export default function ChatRoomPage() {
 
   function handleSubmit() {
     if (!activeQuestion || !inputValue.trim()) return;
-    setAnswers((prev) => ({ ...prev, [activeQuestion]: inputValue.trim() }));
+    const answer = inputValue.trim();
+    const questionText = QUESTIONS.find((q) => q.key === activeQuestion)!.text;
+    setAnswers((prev) => ({ ...prev, [activeQuestion]: answer }));
     setInputValue("");
+
+    // Persist to Supabase
+    if (sessionId) {
+      submitChatAnswer(sessionId, activeQuestion, questionText, answer).catch(() => {});
+    }
 
     // Auto-advance to next unanswered question
     const nextUnanswered = QUESTIONS.find(
@@ -136,8 +158,12 @@ export default function ChatRoomPage() {
 
         {/* Continue button */}
         <div className="mt-10 text-center">
-          <Link
-            href="/register"
+          <button
+            onClick={() => {
+              if (sessionId) completeChatSession(sessionId).catch(() => {});
+              router.push("/register");
+            }}
+            disabled={!allAnswered}
             className={cn(
               "inline-block rounded-pill bg-black px-10 py-4 text-white shadow-button transition-opacity",
               allAnswered
@@ -146,7 +172,7 @@ export default function ChatRoomPage() {
             )}
           >
             Continue
-          </Link>
+          </button>
           {!allAnswered && (
             <p className="mt-2 text-xs text-muted-secondary">
               Answer all questions to continue

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { BrandTicker } from "@/components/sections/brand-ticker";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
+import { createBooking } from "@/lib/actions/schedule";
+import { useFunnelProgress } from "@/lib/hooks/use-funnel-progress";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -18,10 +20,12 @@ function getFirstDayOfMonth(year: number, month: number) {
 
 export default function SchedulePage() {
   const router = useRouter();
+  const { registrationId, setBookingId } = useFunnelProgress();
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);
   const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
@@ -50,9 +54,16 @@ export default function SchedulePage() {
     setSelectedDay(null);
   }
 
-  function handleConfirm() {
-    if (!selectedDay) return;
-    // TODO: persist booking to Supabase in Phase 7
+  async function handleConfirm() {
+    if (!selectedDay || submitting) return;
+    setSubmitting(true);
+    const bookingDate = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+    try {
+      const booking = await createBooking(registrationId, bookingDate);
+      setBookingId(booking.id);
+    } catch {
+      // Continue even if Supabase fails
+    }
     router.push("/project-outline-2");
   }
 
