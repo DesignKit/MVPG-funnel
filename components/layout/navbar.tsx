@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -10,18 +10,42 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/#about" },
-  { label: "Our Project", href: "/#our-project" },
-  { label: "How it work", href: "/#howitwork" },
+  { label: "Our Projects", href: "/#our-project" },
+  { label: "How it works", href: "/#howitwork" },
+  { label: "Testimonials", href: "/#testimonials" },
 ] as const;
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const prevScrollY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      // Hide when scrolling down past 80px, show when scrolling up
+      if (currentY > 80 && currentY > prevScrollY.current) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+      prevScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-white">
+    <nav
+      className={cn(
+        "fixed top-0 z-50 w-full bg-white transition-transform duration-300",
+        hidden && "-translate-y-full"
+      )}
+    >
       <Container className="flex items-center justify-between py-4">
-        {/* Logo */}
-        <Link href="/">
+        {/* Logo (left) */}
+        <Link href="/" className="shrink-0">
           <Image
             src="/images/logo.svg"
             alt="MVP Gurus"
@@ -31,8 +55,8 @@ export function Navbar() {
           />
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-8 tablet:flex desktop:flex">
+        {/* Desktop nav (centered) */}
+        <div className="hidden flex-1 items-center justify-center gap-8 tablet:flex desktop:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -42,6 +66,10 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+        </div>
+
+        {/* CTA button (right) */}
+        <div className="hidden shrink-0 tablet:block desktop:block">
           <Button href="/register" variant="primary" size="sm">
             Get Started
           </Button>

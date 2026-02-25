@@ -3,52 +3,48 @@
 import Image from "next/image";
 
 const BRANDS = [
-  { src: "/images/brand-1.png", alt: "Brand 1" },
-  { src: "/images/brand-2.png", alt: "Brand 2" },
-  { src: "/images/brand-3.png", alt: "Brand 3" },
-  { src: "/images/brand-4.png", alt: "Brand 4" },
-  { src: "/images/brand-5.png", alt: "Brand 5" },
-  { src: "/images/brand-6.png", alt: "Brand 6" },
-  { src: "/images/brand-7.png", alt: "Brand 7" },
-  { src: "/images/brand-8.png", alt: "Brand 8" },
-  { src: "/images/brand-9.png", alt: "Brand 9" },
+  { src: "/images/brand-logo-1.jpg", alt: "MYER" },
+  { src: "/images/brand-logo-2.jpg", alt: "HealthEngine" },
+  { src: "/images/brand-logo-3.jpg", alt: "Accenture" },
+  { src: "/images/brand-logo-4.jpg", alt: "Origin" },
 ];
+
+// Repeat enough times so one strip spans well beyond the viewport
+const LOGO_SET = [...BRANDS, ...BRANDS, ...BRANDS];
+
+function LogoStrip({ ariaHidden }: { ariaHidden?: boolean }) {
+  return (
+    <div
+      className="animate-scroll flex shrink-0 items-center gap-24 px-12 tablet:gap-32 tablet:px-16"
+      aria-hidden={ariaHidden}
+    >
+      {LOGO_SET.map((brand, i) => (
+        <Image
+          key={i}
+          src={brand.src}
+          alt={ariaHidden ? "" : brand.alt}
+          width={500}
+          height={500}
+          className="h-14 w-32 shrink-0 object-contain tablet:h-16 tablet:w-40"
+        />
+      ))}
+    </div>
+  );
+}
 
 export function BrandTicker() {
   return (
-    <section className="overflow-hidden border-y border-border py-6">
-      <p className="mb-4 text-center text-xs uppercase tracking-widest text-muted-secondary">
+    <section className="overflow-hidden border-y border-border py-8">
+      <p className="mb-6 text-center text-sm lowercase tracking-widest text-muted-secondary">
         trusted by teams around the globe
       </p>
       <div className="relative flex overflow-hidden">
-        <div className="animate-scroll flex shrink-0 items-center gap-12 px-6">
-          {BRANDS.map((brand, i) => (
-            <Image
-              key={i}
-              src={brand.src}
-              alt={brand.alt}
-              width={120}
-              height={40}
-              className="h-8 w-auto object-contain opacity-60 grayscale"
-            />
-          ))}
-        </div>
-        {/* Duplicate for seamless loop */}
-        <div
-          className="animate-scroll flex shrink-0 items-center gap-12 px-6"
-          aria-hidden
-        >
-          {BRANDS.map((brand, i) => (
-            <Image
-              key={`dup-${i}`}
-              src={brand.src}
-              alt=""
-              width={120}
-              height={40}
-              className="h-8 w-auto object-contain opacity-60 grayscale"
-            />
-          ))}
-        </div>
+        {/* Fade-out gradients on edges */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent tablet:w-40" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent tablet:w-40" />
+
+        <LogoStrip />
+        <LogoStrip ariaHidden />
       </div>
     </section>
   );

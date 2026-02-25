@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { BrandTicker } from "@/components/sections/brand-ticker";
 import { CaseStudyCard } from "@/components/sections/case-study-card";
-import { TestimonialCard } from "@/components/sections/testimonial-card";
+import { TestimonialCarousel } from "@/components/sections/testimonial-carousel";
 import { CtaSection } from "@/components/sections/cta-section";
 
 const CASE_STUDIES = [
@@ -11,7 +11,7 @@ const CASE_STUDIES = [
     title: "Homely Place",
     description:
       "We built an Airbnb-style coworking booking platform that enabled teams to discover and book shared workspaces, launched from idea to live product in just 48 hours.",
-    image: "/images/case-study-1.jpg",
+    vimeoId: "1108823763",
     href: "https://homely.place/",
     deliveryTime: "48 hours",
   },
@@ -19,7 +19,7 @@ const CASE_STUDIES = [
     title: "Med Clear",
     description:
       "We delivered a compliant medical certificate marketplace connecting businesses through consent-based workflows, enabling instant vetting and real transactions within 72 hours.",
-    image: "/images/case-study-2.jpg",
+    vimeoId: "1109587785",
     href: "#",
     deliveryTime: "72 hours",
   },
@@ -27,7 +27,7 @@ const CASE_STUDIES = [
     title: "Method Loop",
     description:
       "We created a phygital platform where physical card decks unlock premium digital resources, allowing users to access tools and templates within 80 hours of concept to launch.",
-    image: "/images/case-study-3.jpg",
+    vimeoId: "1108982548",
     href: "https://methodloop.com/",
     deliveryTime: "80 hours",
   },
@@ -42,7 +42,7 @@ const HOW_IT_WORKS = [
   },
   {
     number: "02",
-    title: "Have Real User On Your App In Days Not Weeks Or Months",
+    title: "Have Real Users On Your App In Days Not Weeks Or Months",
     description:
       "While your competitors are still wireframing, you'll have real users clicking, testing, and giving feedback. We handle the tech. You get the validation.",
   },
@@ -58,14 +58,14 @@ const TEAM = [
   {
     name: "Anton",
     role: "Sr. User Experience Designer",
-    bio: "With over 12-years experience as a UX designer and Product Manager, Anton loves building fast, user-centric, AI-powered MVPs. His focus is startups, product-market-fit and building and scaling products with speed and precision.",
-    image: "/images/avatar-1.webp",
+    bio: "With over 12-years experience as a UX designer and Product Manager, Anton loves building fast, user-centric, AI-powered MVPs. His focus is startups, product-market-fit and building and scaling products with speed and precision. Clients include Myer, Telstra, Versent, flybuys, Origin Energy and a host of large enterprise and startups in the healthcare, education and retail industries.",
+    image: "/images/team-anton.png",
   },
   {
     name: "Tanuj",
     role: "Full-Stack Developer, AI Engineer",
-    bio: "Tanuj is a founder and a detail oriented techie! He started his career 8 years ago where he worked with Fortune 500 and National brands in innovation, technology, strategy, and new venture.",
-    image: "/images/avatar-2.webp",
+    bio: "Tanuj is a founder and a detail oriented techie! He started his career 8 years ago where he worked with Fortune 500 and National brands in innovation, technology, strategy, and new venture. In 2025, he took his passion for software into his own hands, where he built multiple platforms in various industries in rapid succession.",
+    image: "/images/team-tanuj.png",
   },
 ];
 
@@ -124,17 +124,17 @@ export default function LandingPage() {
               <strong className="text-lg font-medium text-foreground">
                 1,000+
               </strong>{" "}
-              Customer joined
+              Customers joined
             </div>
           </div>
 
-          {/* Hero image */}
+          {/* Hero image — 3 phone composite */}
           <div className="relative mx-auto mt-12 max-w-4xl">
             <Image
               src="/images/hero-mockup.png"
               alt="MVP Gurus platform preview"
-              width={1200}
-              height={600}
+              width={1500}
+              height={1140}
               className="rounded-card"
               priority
             />
@@ -146,11 +146,13 @@ export default function LandingPage() {
       <BrandTicker />
 
       {/* ── About ── */}
-      <section id="about" className="bg-white py-20">
+      <section id="about" className="bg-surface-light-purple py-20">
         <Container>
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
-            About
-          </p>
+          <div className="mb-4 flex justify-center">
+            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+              About
+            </span>
+          </div>
           <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl desktop:text-5xl">
             We Rapidly Build MVP Software For Your Business
           </h2>
@@ -160,26 +162,70 @@ export default function LandingPage() {
             soon&rdquo; excuses? Here&apos;s the brutal truth: Every day you
             wait, someone else is building YOUR idea.
           </p>
+
+          {/* Promo video */}
+          <div className="mx-auto mt-12 max-w-3xl">
+            <div
+              className="relative overflow-hidden rounded-card"
+              style={{ paddingTop: "56.09%" }}
+            >
+              <iframe
+                src="https://player.vimeo.com/video/1125765201?autopause=0&app_id=122963"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="MVPgurus.com | 5 Day MVP Software"
+                className="absolute inset-0 h-full w-full"
+              />
+            </div>
+          </div>
         </Container>
       </section>
 
       {/* ── Case Studies ── */}
-      <section id="our-project" className="bg-surface-gray py-20">
+      <section id="our-project" className="bg-white py-20">
         <Container>
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
-            Our Work
-          </p>
+          <div className="mb-4 flex justify-center">
+            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+              Our Work
+            </span>
+          </div>
           <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
-            Our Project
+            Our Projects
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
             A collection of projects we&apos;ve delivered with purpose and
             precision.
           </p>
-          <div className="mt-12 grid gap-8 tablet:grid-cols-2 desktop:grid-cols-3">
-            {CASE_STUDIES.map((study) => (
-              <CaseStudyCard key={study.title} {...study} />
+          <div className="mt-12 flex flex-col gap-16 overflow-visible">
+            {CASE_STUDIES.map((study, i) => (
+              <div
+                key={study.title}
+                className="sticky z-[1]"
+                style={{ top: `${120 + i * 60}px` }}
+              >
+                <CaseStudyCard index={i} {...study} />
+              </div>
             ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Testimonials ── */}
+      <section id="testimonials" className="bg-white py-20">
+        <Container>
+          <div className="mb-4 flex justify-center">
+            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+              Testimonials
+            </span>
+          </div>
+          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
+            What Our Customers Say
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+            Real feedback from our customers.
+          </p>
+          <div className="mt-12">
+            <TestimonialCarousel />
           </div>
         </Container>
       </section>
@@ -187,9 +233,11 @@ export default function LandingPage() {
       {/* ── How It Works ── */}
       <section id="howitwork" className="bg-surface-light-purple py-20">
         <Container>
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
-            How it work
-          </p>
+          <div className="mb-4 flex justify-center">
+            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+              How it works
+            </span>
+          </div>
           <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl">
             You Don&apos;t Need 3 Months And $50K+ To Validate Your Ideas
           </h2>
@@ -221,9 +269,11 @@ export default function LandingPage() {
       {/* ── Team ── */}
       <section className="bg-white py-20">
         <Container>
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
-            Meet our team
-          </p>
+          <div className="mb-4 flex justify-center">
+            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+              Meet our team
+            </span>
+          </div>
           <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
             The Team Delivering Your MVP...
           </h2>
@@ -235,49 +285,33 @@ export default function LandingPage() {
             {TEAM.map((member) => (
               <div
                 key={member.name}
-                className="flex flex-col items-center gap-4 rounded-card bg-surface-gray p-8 text-center"
+                className="flex flex-col gap-6 rounded-card bg-surface-gray p-8"
               >
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  width={80}
-                  height={80}
-                  className="rounded-full"
-                />
+                <div className="flex justify-center">
+                  <div className="relative">
+                    <div className="absolute inset-0 scale-110 rounded-full bg-surface-light-purple" />
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      width={280}
+                      height={280}
+                      className="relative rounded-full"
+                    />
+                  </div>
+                </div>
                 <div>
-                  <h3 className="font-inter-tight text-xl font-semibold">
+                  <h3 className="font-inter-tight text-2xl font-semibold">
                     Meet {member.name}
                   </h3>
-                  <p className="text-sm text-accent-purple">{member.role}</p>
+                  <p className="mt-1 text-sm font-medium text-foreground">
+                    {member.role}
+                  </p>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-secondary">
                   {member.bio}
                 </p>
               </div>
             ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* ── Testimonial ── */}
-      <section className="bg-surface-warm py-20">
-        <Container>
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-widest text-accent-purple">
-            Testimonials
-          </p>
-          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
-            What Our Latest Customer Has To Say
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
-            Real feedback from our newest customers
-          </p>
-          <div className="mx-auto mt-12 max-w-2xl">
-            <TestimonialCard
-              quote="My business partner and I approached MVP Guru for literally the quickest turnaround of a fencing lead-gen software. We got 3 customers in a week and the first covered the MVP costs (and then some). Thank you for taking us on."
-              name="Louis W."
-              role="Founder"
-              image="/images/testimonial-photo.webp"
-            />
           </div>
         </Container>
       </section>

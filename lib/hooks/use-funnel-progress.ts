@@ -10,22 +10,35 @@ interface FunnelState {
 
 const STORAGE_KEY = "mvpg-funnel-progress";
 
+// Stable empty-state reference — required by useSyncExternalStore so React
+// doesn't detect a "new object on every call" and throw an infinite-loop error.
+const EMPTY_STATE: FunnelState = {
+  sessionId: null,
+  registrationId: null,
+  bookingId: null,
+};
+
+// Cache the last parsed state so getSnapshot returns the same reference when
+// the raw localStorage string hasn't changed (prevents spurious re-renders).
+let _cachedRaw: string | null = null;
+let _cachedState: FunnelState = EMPTY_STATE;
+
 function getSnapshot(): FunnelState {
-  if (typeof window === "undefined") {
-    return { sessionId: null, registrationId: null, bookingId: null };
-  }
+  if (typeof window === "undefined") return EMPTY_STATE;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw
-      ? JSON.parse(raw)
-      : { sessionId: null, registrationId: null, bookingId: null };
+    if (raw === _cachedRaw) return _cachedState;
+    _cachedRaw = raw;
+    _cachedState = raw ? (JSON.parse(raw) as FunnelState) : EMPTY_STATE;
+    return _cachedState;
   } catch {
-    return { sessionId: null, registrationId: null, bookingId: null };
+    return EMPTY_STATE;
   }
 }
 
+// getServerSnapshot must return the exact same reference on every call.
 function getServerSnapshot(): FunnelState {
-  return { sessionId: null, registrationId: null, bookingId: null };
+  return EMPTY_STATE;
 }
 
 function subscribe(callback: () => void) {

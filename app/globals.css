@@ -62,6 +62,10 @@
 
 /* ── Base styles ── */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     font-family: var(--font-inter);
     color: var(--color-foreground);

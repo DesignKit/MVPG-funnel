@@ -26,7 +26,7 @@ export function HowItWorks() {
     <section id="howitwork" className="bg-surface-light-purple py-20">
       <Container>
         <h2 className="mb-12 text-center font-inter-tight text-4xl font-semibold">
-          How it work
+          How it works
         </h2>
         <div className="grid gap-8 tablet:grid-cols-3 desktop:grid-cols-3">
           {STEPS.map((step) => (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { geist, inter, interTight } from "@/lib/fonts";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,9 +32,11 @@ export default function RootLayout({
       className={`${geist.variable} ${inter.variable} ${interTight.variable}`}
     >
       <body>
-        <Navbar />
-        <main className="pt-[72px]">{children}</main>
-        <Footer />
+        <SmoothScroll>
+          <Navbar />
+          <main className="pt-[72px]">{children}</main>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );
