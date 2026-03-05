@@ -3,10 +3,10 @@
 import Image from "next/image";
 
 const BRANDS = [
-  { src: "/images/brand-logo-1.jpg", alt: "MYER" },
-  { src: "/images/brand-logo-2.jpg", alt: "HealthEngine" },
-  { src: "/images/brand-logo-3.jpg", alt: "Accenture" },
-  { src: "/images/brand-logo-4.jpg", alt: "Origin" },
+  { src: "/images/brand-logo-1.png", alt: "MYER" },
+  { src: "/images/brand-logo-2.png", alt: "HealthEngine" },
+  { src: "/images/brand-logo-3.png", alt: "Accenture" },
+  { src: "/images/brand-logo-4.png", alt: "Origin" },
 ];
 
 // Repeat enough times so one strip spans well beyond the viewport
@@ -25,7 +25,7 @@ function LogoStrip({ ariaHidden }: { ariaHidden?: boolean }) {
           alt={ariaHidden ? "" : brand.alt}
           width={500}
           height={500}
-          className="h-14 w-32 shrink-0 object-contain tablet:h-16 tablet:w-40"
+          className="h-10 w-auto shrink-0 tablet:h-12"
         />
       ))}
     </div>

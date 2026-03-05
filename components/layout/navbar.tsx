@@ -70,7 +70,7 @@ export function Navbar() {
 
         {/* CTA button (right) */}
         <div className="hidden shrink-0 tablet:block desktop:block">
-          <Button href="/register" variant="primary" size="sm">
+          <Button href="/apply" variant="primary" size="sm">
             Get Started
           </Button>
         </div>
@@ -116,7 +116,7 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button href="/register" variant="primary" className="mt-2 w-full">
+            <Button href="/apply" variant="primary" className="mt-2 w-full">
               Get Started
             </Button>
           </div>

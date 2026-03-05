@@ -47,6 +47,13 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Chief Digital Officer @ AGL",
     image: "/images/avatar-1.webp",
   },
+  {
+    quote:
+      "The team at MVP Guru are personally one of the best developers I've dealt with. Clear, helpful and professional in every way possible. Their knowledge and expertise is unmatched, really enjoyed the journey with them in building an extensive project. They ensured every outcome was met and were also available anytime I needed assistance. Thank you MVP Guru once again!",
+    name: "Sherry Mohammad",
+    role: "Founder @ SkillVLT",
+    image: "/images/avatar-sherrySkillVLT.jpg",
+  },
 ];
 
 function QuoteIcon() {

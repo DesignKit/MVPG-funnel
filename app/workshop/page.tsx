@@ -77,7 +77,7 @@ export default function ChatRoomPage() {
     <section className="min-h-screen bg-surface-light-purple py-12">
       <Container className="max-w-3xl">
         <div className="text-center">
-          <h1 className="font-inter-tight text-4xl font-semibold">
+          <h1 className="animate-title-entrance font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl desktop:text-5xl">
             AI Workshop
           </h1>
           <p className="mt-2 text-muted-secondary">
@@ -187,7 +187,7 @@ export default function ChatRoomPage() {
           <button
             onClick={() => {
               if (sessionId) completeChatSession(sessionId).catch(() => {});
-              router.push("/register");
+              router.push("/report");
             }}
             disabled={!allAnswered}
             className={cn(

@@ -27,7 +27,7 @@ export function CaseStudyCard({
   return (
     <div className={`overflow-hidden rounded-card ${bg} shadow-lg`}>
       <div
-        className={`flex flex-col gap-8 p-6 tablet:items-center tablet:p-10 ${
+        className={`flex flex-col gap-8 p-8 tablet:items-center tablet:p-12 ${
           reversed ? "tablet:flex-row-reverse" : "tablet:flex-row"
         }`}
       >
@@ -38,7 +38,7 @@ export function CaseStudyCard({
               Delivered in {deliveryTime}
             </span>
           )}
-          <h3 className="font-inter-tight text-2xl font-semibold">{title}</h3>
+          <h3 className="font-inter-tight text-[28px] font-semibold">{title}</h3>
           <p className="text-sm leading-relaxed text-muted-secondary">
             {description}
           </p>

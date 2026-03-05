@@ -75,19 +75,29 @@ export default function LandingPage() {
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-white pb-20 pt-12">
         <Container className="text-center">
-          <h1 className="mx-auto max-w-4xl font-inter-tight text-4xl font-semibold leading-tight tablet:text-5xl desktop:text-6xl">
+          <h1 className="hero-animate-title mx-auto max-w-4xl font-inter-tight text-4xl font-semibold leading-tight tablet:text-5xl desktop:text-6xl" style={{ '--hero-delay': '0.2s' } as React.CSSProperties}>
             Give Us 5 Days And We&apos;ll Deliver Your Launch-Ready MVP Or{" "}
             <span className="text-primary">You Don&apos;t Pay!</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-secondary">
-            AI may get you started but we&apos;re here for step 2 and beyond.
+          <p className="hero-animate-pop mx-auto mt-6 max-w-2xl text-lg text-muted-secondary" style={{ '--hero-delay': '0.8s' } as React.CSSProperties}>
+            From idea to live product with real users — in just 5 working days.
           </p>
-          <Button href="/register" variant="primary" size="lg" className="mt-8">
-            Get Started Today
-          </Button>
+          <div className="hero-animate-pop mt-8" style={{ '--hero-delay': '1.0s' } as React.CSSProperties}>
+            <Button href="/apply" variant="gradient" size="lg">
+              Get Started Today
+              <span className="cta-arrow-flip ml-2">
+                <svg className="cta-arrow-out" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+                <svg className="cta-arrow-in" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </span>
+            </Button>
+          </div>
 
           {/* Social proof */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
+          <div className="hero-animate-pop mt-10 flex flex-wrap items-center justify-center gap-8" style={{ '--hero-delay': '1.2s' } as React.CSSProperties}>
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 <Image
@@ -129,7 +139,7 @@ export default function LandingPage() {
           </div>
 
           {/* Hero image — 3 phone composite */}
-          <div className="relative mx-auto mt-12 max-w-4xl">
+          <div className="hero-animate-rise relative mx-auto mt-12 max-w-4xl" style={{ '--hero-delay': '0.6s' } as React.CSSProperties}>
             <Image
               src="/images/hero-mockup.png"
               alt="MVP Gurus platform preview"
@@ -148,23 +158,24 @@ export default function LandingPage() {
       {/* ── About ── */}
       <section id="about" className="bg-surface-light-purple py-20">
         <Container>
-          <div className="mb-4 flex justify-center">
-            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
-              About
-            </span>
+          <div className="animate-title-entrance">
+            <div className="mb-4 flex justify-center">
+              <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+                About
+              </span>
+            </div>
+            <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-2xl font-semibold tablet:text-3xl">
+              We Rapidly Build MVP Software For Your Business
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-muted-secondary">
+              Most founders spend months and thousands before a single user
+              touches their product. We flip that — you&apos;ll have real users
+              testing your idea within days, not quarters.
+            </p>
           </div>
-          <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl desktop:text-5xl">
-            We Rapidly Build MVP Software For Your Business
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-muted-secondary">
-            Tired of wrangling with AI or vibe code or dealing with developers;
-            endless delays, overpromises, and &ldquo;we&apos;ll update you
-            soon&rdquo; excuses? Here&apos;s the brutal truth: Every day you
-            wait, someone else is building YOUR idea.
-          </p>
 
           {/* Promo video */}
-          <div className="mx-auto mt-12 max-w-3xl">
+          <div className="animate-rise-up mx-auto mt-20 max-w-3xl">
             <div
               className="relative overflow-hidden rounded-card"
               style={{ paddingTop: "56.09%" }}
@@ -182,26 +193,28 @@ export default function LandingPage() {
       </section>
 
       {/* ── Case Studies ── */}
-      <section id="our-project" className="bg-white py-20">
+      <section id="our-project" className="bg-white pt-[150px] pb-16">
         <Container>
-          <div className="mb-4 flex justify-center">
-            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+          <div className="animate-title-entrance">
+            <div className="mb-4 flex justify-center">
+              <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+                Our Project
+              </span>
+            </div>
+            <h2 className="text-center font-inter-tight text-2xl font-semibold tablet:text-3xl">
               Our Work
-            </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+              A collection of projects we&apos;ve delivered with purpose and
+              precision.
+            </p>
           </div>
-          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
-            Our Projects
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
-            A collection of projects we&apos;ve delivered with purpose and
-            precision.
-          </p>
-          <div className="mt-12 flex flex-col gap-16 overflow-visible">
+          <div className="mt-20 flex flex-col gap-16 overflow-visible">
             {CASE_STUDIES.map((study, i) => (
               <div
                 key={study.title}
                 className="sticky z-[1]"
-                style={{ top: `${120 + i * 60}px` }}
+                style={{ top: `calc(50vh - 200px + ${i * 60}px)` }}
               >
                 <CaseStudyCard index={i} {...study} />
               </div>
@@ -213,18 +226,20 @@ export default function LandingPage() {
       {/* ── Testimonials ── */}
       <section id="testimonials" className="bg-white py-20">
         <Container>
-          <div className="mb-4 flex justify-center">
-            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
-              Testimonials
-            </span>
+          <div className="animate-title-entrance">
+            <div className="mb-4 flex justify-center">
+              <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+                Testimonials
+              </span>
+            </div>
+            <h2 className="text-center font-inter-tight text-2xl font-semibold tablet:text-3xl">
+              What Our Customers Say
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+              Trusted by 80+ founders across Australia and beyond.
+            </p>
           </div>
-          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
-            What Our Customers Say
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
-            Real feedback from our customers.
-          </p>
-          <div className="mt-12">
+          <div className="animate-rise-up mt-20">
             <TestimonialCarousel />
           </div>
         </Container>
@@ -233,28 +248,31 @@ export default function LandingPage() {
       {/* ── How It Works ── */}
       <section id="howitwork" className="bg-surface-light-purple py-20">
         <Container>
-          <div className="mb-4 flex justify-center">
-            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
-              How it works
-            </span>
+          <div className="animate-title-entrance">
+            <div className="mb-4 flex justify-center">
+              <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+                How it works
+              </span>
+            </div>
+            <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-2xl font-semibold tablet:text-3xl">
+              You Don&apos;t Need 3 Months And $50K+ To Validate Your Ideas
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+              Launch fast, get real users, and validate your product in days not
+              months.
+            </p>
           </div>
-          <h2 className="mx-auto max-w-3xl text-center font-inter-tight text-3xl font-semibold leading-tight tablet:text-4xl">
-            You Don&apos;t Need 3 Months And $50K+ To Validate Your Ideas
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
-            Launch fast, get real users, and validate your product in days not
-            months.
-          </p>
-          <div className="mt-12 grid gap-8 tablet:grid-cols-3 desktop:grid-cols-3">
-            {HOW_IT_WORKS.map((step) => (
+          <div className="mt-20 grid gap-10 tablet:grid-cols-3 desktop:grid-cols-3">
+            {HOW_IT_WORKS.map((step, i) => (
               <div
                 key={step.number}
-                className="flex flex-col gap-4 rounded-card bg-white p-8"
+                className="animate-rise-up flex flex-col gap-4 rounded-card bg-white p-8"
+                style={{ '--stagger': i } as React.CSSProperties}
               >
-                <span className="font-inter-tight text-5xl font-semibold text-accent-purple">
+                <span className="font-inter-tight text-[39px] font-semibold text-accent-purple">
                   {step.number}
                 </span>
-                <h3 className="font-inter-tight text-xl font-semibold">
+                <h3 className="font-inter-tight text-lg font-bold">
                   {step.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-muted-secondary">
@@ -269,23 +287,26 @@ export default function LandingPage() {
       {/* ── Team ── */}
       <section className="bg-white py-20">
         <Container>
-          <div className="mb-4 flex justify-center">
-            <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
-              Meet our team
-            </span>
+          <div className="animate-title-entrance">
+            <div className="mb-4 flex justify-center">
+              <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+                Meet our team
+              </span>
+            </div>
+            <h2 className="text-center font-inter-tight text-2xl font-semibold tablet:text-3xl">
+              The Team Delivering Your MVP...
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
+              A proven team of product, design, and engineering experts focused on
+              speed and validation.
+            </p>
           </div>
-          <h2 className="text-center font-inter-tight text-3xl font-semibold tablet:text-4xl">
-            The Team Delivering Your MVP...
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-center text-muted-secondary">
-            A proven team of product, design, and engineering experts focused on
-            speed and validation.
-          </p>
-          <div className="mt-12 grid gap-8 tablet:grid-cols-2 desktop:grid-cols-2">
-            {TEAM.map((member) => (
+          <div className="mt-20 grid gap-8 tablet:grid-cols-2 desktop:grid-cols-2">
+            {TEAM.map((member, i) => (
               <div
                 key={member.name}
-                className="flex flex-col gap-6 rounded-card bg-surface-gray p-8"
+                className="animate-rise-up flex flex-col gap-6 rounded-card bg-surface-gray p-8"
+                style={{ '--stagger': i } as React.CSSProperties}
               >
                 <div className="flex justify-center">
                   <div className="relative">
@@ -312,6 +333,62 @@ export default function LandingPage() {
                 </p>
               </div>
             ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Latest Testimonial ── */}
+      <section className="bg-surface-light-purple py-20">
+        <Container>
+          <div className="animate-title-entrance">
+            <div className="mb-4 flex justify-center">
+              <span className="rounded-pill border border-border bg-white px-4 py-1.5 text-sm text-muted">
+                What they say
+              </span>
+            </div>
+            <h2 className="text-center font-inter-tight text-2xl font-semibold tablet:text-3xl">
+              What Our Latest Customer Has To Say
+            </h2>
+          </div>
+          <div className="animate-rise-up mx-auto mt-12 max-w-3xl">
+            <div className="rounded-card bg-white p-8 shadow-card tablet:p-10">
+              <div className="flex items-start gap-5">
+                <Image
+                  src="/images/avatar-sherrySkillVLT.jpg"
+                  alt="Sherry Mohammad"
+                  width={56}
+                  height={56}
+                  className="h-14 w-14 shrink-0 rounded-full object-cover"
+                />
+                <div>
+                  <p className="font-geist text-sm font-semibold text-foreground">
+                    Sherry Mohammad
+                  </p>
+                  <p className="font-geist text-sm text-muted-secondary">
+                    Founder @ SkillVLT
+                  </p>
+                </div>
+              </div>
+              <p className="mt-6 font-geist text-base leading-relaxed text-muted-secondary">
+                The team at MVP Guru are personally one of the best
+                developers I&apos;ve dealt with. Clear, helpful and professional
+                in every way possible. Their knowledge and expertise is
+                unmatched, really enjoyed the journey with them in building an
+                extensive project. They ensured every outcome was met and were
+                also available anytime I needed assistance. Thank you MVP Guru
+                once again!
+              </p>
+              <div className="mt-5 flex items-center gap-1 text-primary-gold">
+                {"★★★★★".split("").map((star, i) => (
+                  <span key={i} className="text-lg">
+                    {star}
+                  </span>
+                ))}
+                <span className="ml-2 text-sm font-medium text-foreground">
+                  10/10
+                </span>
+              </div>
+            </div>
           </div>
         </Container>
       </section>

@@ -4,9 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function createChatSession() {
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const { data, error } = await supabase
     .from("chat_sessions")
-    .insert({})
+    .insert({ user_id: user?.id ?? null })
     .select()
     .single();
 

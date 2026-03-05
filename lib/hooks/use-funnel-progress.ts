@@ -6,6 +6,7 @@ interface FunnelState {
   sessionId: string | null;
   registrationId: string | null;
   bookingId: string | null;
+  userId: string | null;
 }
 
 const STORAGE_KEY = "mvpg-funnel-progress";
@@ -16,6 +17,7 @@ const EMPTY_STATE: FunnelState = {
   sessionId: null,
   registrationId: null,
   bookingId: null,
+  userId: null,
 };
 
 // Cache the last parsed state so getSnapshot returns the same reference when
@@ -70,6 +72,13 @@ export function useFunnelProgress() {
     window.dispatchEvent(new StorageEvent("storage"));
   }, []);
 
+  const setUserId = useCallback((userId: string) => {
+    const current = getSnapshot();
+    const next = { ...current, userId };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    window.dispatchEvent(new StorageEvent("storage"));
+  }, []);
+
   const reset = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     window.dispatchEvent(new StorageEvent("storage"));
@@ -80,6 +89,7 @@ export function useFunnelProgress() {
     setSessionId,
     setRegistrationId,
     setBookingId,
+    setUserId,
     reset,
   };
 }

@@ -13,7 +13,7 @@ export function TestimonialCard({ quote, name, role, image }: TestimonialData) {
     <div className="flex flex-col items-center gap-6 rounded-card bg-white p-8 text-center shadow-card">
       <StarRating />
       <p className="font-geist text-base leading-relaxed text-muted-secondary">
-        &ldquo;{quote}&rdquo;
+        {quote}
       </p>
       <div className="flex flex-col items-center gap-3">
         <Image
