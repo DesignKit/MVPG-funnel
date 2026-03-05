@@ -8,6 +8,7 @@ import {
   getRegistrations,
   updateRegistrationStatus,
 } from "@/lib/actions/admin";
+import { SourceBadge } from "@/components/admin/source-badge";
 
 interface Props {
   initialData: Record<string, unknown>[];
@@ -20,7 +21,7 @@ export function RegistrationsTable({ initialData, initialCount }: Props) {
   const [data, setData] = useState(initialData);
   const [count, setCount] = useState(initialCount);
   const [page, setPage] = useState(1);
-  const filtersRef = useRef<{ search?: string; status?: string }>({});
+  const filtersRef = useRef<{ search?: string; status?: string; source?: string; lead_status?: string }>({});
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const fetchData = useCallback(async (p: number) => {
@@ -67,6 +68,26 @@ export function RegistrationsTable({ initialData, initialCount }: Props) {
           options={STATUS_OPTIONS}
           onUpdate={updateRegistrationStatus}
         />
+      ),
+    },
+    {
+      key: "source",
+      header: "Source",
+      render: (row: Record<string, unknown>) =>
+        row.source ? <SourceBadge source={row.source as string} /> : null,
+    },
+    {
+      key: "lead_status",
+      header: "Lead Status",
+      render: (row: Record<string, unknown>) => (
+        <span className="text-xs capitalize">{((row.lead_status as string) || "open").replace(/_/g, " ")}</span>
+      ),
+    },
+    {
+      key: "assigned_to",
+      header: "Assigned",
+      render: (row: Record<string, unknown>) => (
+        <span className="text-xs">{(row.assigned_to as string) || "—"}</span>
       ),
     },
     {

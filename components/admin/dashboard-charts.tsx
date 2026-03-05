@@ -36,6 +36,7 @@ interface ChartDataProps {
     bookings: number;
     outlines: number;
   };
+  sourceBreakdown?: { source: string; count: number }[];
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -43,6 +44,29 @@ const STATUS_COLORS: Record<string, string> = {
   confirmed: "var(--chart-2)",
   cancelled: "var(--chart-1)",
   completed: "var(--chart-3)",
+};
+
+const SOURCE_COLORS: Record<string, string> = {
+  website_funnel: "var(--chart-1)",
+  website_contact: "var(--chart-1)",
+  meta_ads: "var(--chart-2)",
+  linkedin: "var(--chart-3)",
+  cold_email: "var(--chart-4)",
+};
+
+const SOURCE_LABELS: Record<string, string> = {
+  website_funnel: "Website",
+  website_contact: "Contact",
+  meta_ads: "Meta Ads",
+  linkedin: "LinkedIn",
+  cold_email: "Cold Email",
+};
+
+const sourceConfig: ChartConfig = {
+  website_funnel: { label: "Website", color: "var(--chart-1)" },
+  meta_ads: { label: "Meta Ads", color: "var(--chart-2)" },
+  linkedin: { label: "LinkedIn", color: "var(--chart-3)" },
+  cold_email: { label: "Cold Email", color: "var(--chart-4)" },
 };
 
 const FUNNEL_DATA_KEYS = ["sessions", "registrations", "bookings", "outlines"] as const;
@@ -66,6 +90,7 @@ export function DashboardCharts({
   dailyRegistrations,
   bookingStatuses,
   funnelCounts,
+  sourceBreakdown,
 }: ChartDataProps) {
   const funnelData = FUNNEL_DATA_KEYS.map((key) => ({
     name: key.charAt(0).toUpperCase() + key.slice(1),
@@ -205,6 +230,39 @@ export function DashboardCharts({
           </ChartContainer>
         </CardContent>
       </Card>
+      {/* Leads by Source */}
+      {sourceBreakdown && sourceBreakdown.length > 0 && (
+        <Card className="border-border bg-white shadow-sm">
+          <CardHeader>
+            <CardTitle className="font-inter-tight text-base font-semibold">
+              Leads by Source
+            </CardTitle>
+            <CardDescription>All-time breakdown</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={sourceConfig} className="h-[250px] w-full">
+              <PieChart>
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Pie
+                  data={sourceBreakdown.map((s) => ({ ...s, name: SOURCE_LABELS[s.source] || s.source }))}
+                  dataKey="count"
+                  nameKey="name"
+                  innerRadius={60}
+                  outerRadius={90}
+                  paddingAngle={2}
+                >
+                  {sourceBreakdown.map((entry) => (
+                    <Cell
+                      key={entry.source}
+                      fill={SOURCE_COLORS[entry.source] ?? "var(--chart-5)"}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

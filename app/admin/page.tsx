@@ -2,6 +2,7 @@ import {
   getEnhancedDashboardStats,
   getChartData,
   getRecentActivity,
+  getLeadsBySource,
 } from "@/lib/actions/admin";
 import { DashboardStats } from "@/components/admin/dashboard-stats";
 import { DashboardCharts } from "@/components/admin/dashboard-charts";
@@ -9,10 +10,11 @@ import { ActivityFeed } from "@/components/admin/activity-feed";
 import { BlurFade } from "@/components/ui/blur-fade";
 
 export default async function AdminDashboard() {
-  const [stats, chartData, activities] = await Promise.all([
+  const [stats, chartData, activities, sourceBreakdown] = await Promise.all([
     getEnhancedDashboardStats(),
     getChartData(),
     getRecentActivity(),
+    getLeadsBySource(),
   ]);
 
   return (
@@ -33,7 +35,7 @@ export default async function AdminDashboard() {
       </BlurFade>
 
       <BlurFade delay={0.15}>
-        <DashboardCharts {...chartData} />
+        <DashboardCharts {...chartData} sourceBreakdown={sourceBreakdown} />
       </BlurFade>
 
       <BlurFade delay={0.2}>

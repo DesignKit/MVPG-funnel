@@ -46,12 +46,16 @@ export async function getAdminInfo() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, display_name")
     .eq("user_id", user.id)
     .maybeSingle();
 
   if (!profile || !["admin", "super_admin"].includes(profile.role)) return null;
-  return { email: user.email ?? "", role: profile.role as Role };
+  return {
+    email: user.email ?? "",
+    role: profile.role as Role,
+    displayName: (profile.display_name as string) ?? "",
+  };
 }
 
 export async function getAdminDashboardStats() {
@@ -77,7 +81,7 @@ export async function getAdminDashboardStats() {
 export async function getRegistrations(
   page = 1,
   perPage = 20,
-  filters?: { search?: string; status?: string }
+  filters?: { search?: string; status?: string; source?: string; lead_status?: string }
 ) {
   const supabase = await createClient();
   const from = (page - 1) * perPage;
@@ -92,6 +96,12 @@ export async function getRegistrations(
   }
   if (filters?.status) {
     query = query.eq("status", filters.status);
+  }
+  if (filters?.source) {
+    query = query.eq("source", filters.source);
+  }
+  if (filters?.lead_status) {
+    query = query.eq("lead_status", filters.lead_status);
   }
 
   const { data, count } = await query
@@ -503,7 +513,7 @@ export async function getPipelineData() {
   const { data: regs } = await supabase
     .from("registrations")
     .select(
-      "id, name, email, idea_description, status, created_at"
+      "id, name, email, idea_description, status, created_at, source, lead_status, assigned_to"
     )
     .order("created_at", { ascending: false });
 
@@ -566,7 +576,7 @@ export async function getPipelineData() {
 export async function getLeadDetail(registrationId: string) {
   const supabase = await createClient();
 
-  const [regRes, bookingRes, outlineRes] = await Promise.all([
+  const [regRes, bookingRes, outlineRes, activityRes] = await Promise.all([
     supabase
       .from("registrations")
       .select("*")
@@ -582,6 +592,11 @@ export async function getLeadDetail(registrationId: string) {
       .select("*")
       .eq("registration_id", registrationId)
       .maybeSingle(),
+    supabase
+      .from("lead_activity_log")
+      .select("*")
+      .eq("registration_id", registrationId)
+      .order("created_at", { ascending: false }),
   ]);
 
   // Get chat responses if there's a session linked
@@ -600,6 +615,7 @@ export async function getLeadDetail(registrationId: string) {
     booking: bookingRes.data,
     outline: outlineRes.data,
     responses,
+    activities: activityRes.data ?? [],
   };
 }
 
@@ -649,4 +665,159 @@ export async function updatePricingTier(
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq("id", id);
   if (error) throw new Error(error.message);
+}
+
+/* ── Global Search ── */
+
+export interface SearchResult {
+  type: "registration" | "booking";
+  id: string;
+  title: string;
+  subtitle: string;
+}
+
+export async function globalSearch(query: string): Promise<SearchResult[]> {
+  if (!query || query.length < 2) return [];
+
+  const supabase = await createClient();
+  const q = `%${query}%`;
+
+  const [regsRes, bookingsRes] = await Promise.all([
+    supabase
+      .from("registrations")
+      .select("id, name, email, idea_description")
+      .or(`name.ilike.${q},email.ilike.${q},idea_description.ilike.${q}`)
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("bookings")
+      .select("id, booking_date, status, registrations(name, email)")
+      .order("created_at", { ascending: false })
+      .limit(10),
+  ]);
+
+  const results: SearchResult[] = [];
+
+  for (const r of regsRes.data ?? []) {
+    results.push({
+      type: "registration",
+      id: r.id,
+      title: r.name || r.email,
+      subtitle: r.idea_description?.slice(0, 80) || "No idea provided",
+    });
+  }
+
+  // Client-side filter bookings by joined registration name/email
+  const lowerQ = query.toLowerCase();
+  for (const b of bookingsRes.data ?? []) {
+    const reg = b.registrations as { name?: string; email?: string } | null;
+    if (
+      reg?.name?.toLowerCase().includes(lowerQ) ||
+      reg?.email?.toLowerCase().includes(lowerQ)
+    ) {
+      results.push({
+        type: "booking",
+        id: b.id,
+        title: `${reg?.name || reg?.email || "Booking"} — ${b.booking_date}`,
+        subtitle: `Status: ${b.status}`,
+      });
+      if (results.filter((r) => r.type === "booking").length >= 3) break;
+    }
+  }
+
+  return results;
+}
+
+/* ── CRM Actions ── */
+
+export async function updateLeadCrmFields(
+  id: string,
+  fields: {
+    assigned_to?: string | null;
+    lead_status?: string;
+    notes?: string | null;
+    next_steps?: string | null;
+    phone?: string | null;
+    company?: string | null;
+    industry?: string | null;
+    budget?: string | null;
+    how_far_along?: string | null;
+    why_building_mvp?: string | null;
+  }
+) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("registrations")
+    .update({ ...fields, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  // Log what changed
+  const changes = Object.entries(fields)
+    .filter(([, v]) => v !== undefined)
+    .map(([k]) => k)
+    .join(", ");
+
+  await supabase.from("lead_activity_log").insert({
+    registration_id: id,
+    event_type: fields.lead_status ? "status_changed" : fields.assigned_to !== undefined ? "assigned" : "note_added",
+    event_source: "admin",
+    description: `Updated: ${changes}`,
+    metadata: fields,
+  });
+}
+
+export async function getLeadActivityLog(registrationId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("lead_activity_log")
+    .select("*")
+    .eq("registration_id", registrationId)
+    .order("created_at", { ascending: false });
+  return data ?? [];
+}
+
+export async function logLeadActivity(
+  registrationId: string,
+  eventType: string,
+  description: string,
+  source = "admin",
+  metadata?: Record<string, unknown>
+) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("lead_activity_log").insert({
+    registration_id: registrationId,
+    event_type: eventType,
+    event_source: source,
+    description,
+    metadata: metadata ?? {},
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function getTeamMembers() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("team_members")
+    .select("id, name, email, role")
+    .eq("active", true)
+    .order("name");
+  return data ?? [];
+}
+
+export async function getLeadsBySource() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("registrations")
+    .select("source");
+
+  if (!data) return [];
+
+  const counts: Record<string, number> = {};
+  for (const row of data) {
+    const src = row.source || "website_funnel";
+    counts[src] = (counts[src] ?? 0) + 1;
+  }
+  return Object.entries(counts).map(([source, count]) => ({ source, count }));
 }

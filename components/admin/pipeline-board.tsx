@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { LeadDetailPanel } from "./lead-detail-panel";
+import { SourceBadge } from "./source-badge";
 
 interface PipelineLead {
   id: string;
@@ -14,6 +15,9 @@ interface PipelineLead {
   status: string;
   created_at: string;
   stage: string;
+  source?: string;
+  lead_status?: string;
+  assigned_to?: string;
 }
 
 interface PipelineBoardProps {
@@ -65,7 +69,8 @@ function LeadCard({
         <p className="mt-2 text-xs text-muted-secondary line-clamp-2">
           {lead.idea_description || "No idea provided"}
         </p>
-        <div className="mt-2">
+        <div className="mt-2 flex items-center gap-1.5">
+          {lead.source && <SourceBadge source={lead.source} />}
           <Badge className="bg-surface-gray text-muted-secondary border-border text-[10px]">
             {daysAgo(lead.created_at)}
           </Badge>
