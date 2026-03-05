@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { geist, inter, interTight } from "@/lib/fonts";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { ConditionalNavbar } from "@/components/layout/conditional-navbar";
+import { ConditionalFooter } from "@/components/layout/conditional-footer";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import "./globals.css";
 
@@ -33,9 +33,9 @@ export default function RootLayout({
     >
       <body>
         <SmoothScroll>
-          <Navbar />
+          <ConditionalNavbar />
           <main className="pt-[72px]">{children}</main>
-          <Footer />
+          <ConditionalFooter />
         </SmoothScroll>
       </body>
     </html>

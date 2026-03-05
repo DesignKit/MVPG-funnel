@@ -13,6 +13,8 @@ const buttonVariants = cva(
         outline:
           "border border-primary bg-white text-foreground rounded-pill hover:bg-surface-warm",
         ghost: "text-foreground hover:opacity-70",
+        gradient:
+          "group bg-gradient-cta text-white rounded-pill shadow-button hover:scale-[1.03] transition-transform",
       },
       size: {
         default: "px-8 py-3 text-base",

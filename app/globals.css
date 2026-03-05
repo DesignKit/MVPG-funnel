@@ -1,4 +1,100 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── shadcn/ui token layer (maps to our brand tokens) ── */
+:root {
+  --radius: 0.625rem;
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --primary: #e88146;
+  --primary-foreground: #ffffff;
+  --secondary: #f6f3fe;
+  --secondary-foreground: #111111;
+  --muted: #f6f7f9;
+  --muted-foreground: #696969;
+  --accent: #9563ff;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #9563ff;
+  --chart-1: #e88146;
+  --chart-2: #9563ff;
+  --chart-3: #ed81ff;
+  --chart-4: #FFB853;
+  --chart-5: #d1d0fc;
+  --sidebar-background: #ffffff;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #e88146;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f6f3fe;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #9563ff;
+  --sidebar: hsl(0 0% 98%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
+  }
+}
 
 /* ── Design tokens from Framer export ── */
 @theme {
@@ -35,7 +131,7 @@
 
   /* Border radii */
   --radius-pill: 100px;
-  --radius-card: 20px;
+  --radius-card: 32px;
 
   /* Shadows */
   --shadow-card: rgba(0, 0, 0, 0.12) 0px 40px 40px 0px;
@@ -60,6 +156,102 @@
   }
 }
 
+/* ── Scroll-linked animation keyframes (from Framer export) ── */
+@keyframes title-entrance {
+  from { opacity: 0; transform: translateY(-20px) scale(1.2); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes spring-pop {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rise-up {
+  from { opacity: 0; transform: translateY(150px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Scroll-linked animation utility classes ── */
+.animate-title-entrance {
+  animation: title-entrance linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 100%;
+}
+
+.animate-spring-pop {
+  animation: spring-pop linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 100%;
+}
+
+.animate-rise-up {
+  animation: rise-up linear both;
+  animation-timeline: view();
+  animation-range: entry calc(var(--stagger, 0) * 20%) entry 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-title-entrance,
+  .animate-spring-pop,
+  .animate-rise-up,
+  .hero-animate-title,
+  .hero-animate-pop,
+  .hero-animate-rise {
+    animation: none;
+  }
+}
+
+/* ── Hero one-shot entrance animations (from Framer export) ── */
+.hero-animate-title {
+  animation: title-entrance 1.5s cubic-bezier(0.12, 0.23, 0.5, 1) both;
+  animation-delay: var(--hero-delay, 0s);
+}
+
+.hero-animate-pop {
+  animation: spring-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-delay, 0.4s);
+}
+
+.hero-animate-rise {
+  animation: rise-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--hero-delay, 0s);
+}
+
+/* ── Gradient CTA button ── */
+.bg-gradient-cta {
+  background: linear-gradient(105deg, #7c4dff 0%, #b06ae0 40%, #e8a070 100%);
+}
+
+/* ── CTA arrow-flip hover effect (from Framer export) ── */
+.cta-arrow-flip {
+  position: relative;
+  overflow: hidden;
+  width: 23px;
+  height: 23px;
+}
+
+.cta-arrow-flip .cta-arrow-out,
+.cta-arrow-flip .cta-arrow-in {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-arrow-flip .cta-arrow-in {
+  position: absolute;
+  inset: 0;
+  width: 23px;
+  height: 23px;
+  transform: translate(-110%, 110%);
+}
+
+.group:hover .cta-arrow-flip .cta-arrow-out {
+  transform: translate(110%, -110%);
+}
+
+.group:hover .cta-arrow-flip .cta-arrow-in {
+  transform: translate(0, 0);
+}
+
 /* ── Base styles ── */
 @layer base {
   html {
@@ -72,4 +264,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+.dark {
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
