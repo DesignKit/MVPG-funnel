@@ -4,6 +4,11 @@
 -- ============================================
 -- 1. NEW CRM COLUMNS ON REGISTRATIONS
 -- ============================================
+-- Ensure base columns exist (migration 002 may not have been run on live DB)
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS name text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS email text;
+CREATE INDEX IF NOT EXISTS idx_registrations_email ON public.registrations(email);
+
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS source text NOT NULL DEFAULT 'website_funnel';
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS assigned_to text;
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS lead_status text NOT NULL DEFAULT 'open';
@@ -17,7 +22,12 @@ ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS notes text;
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS next_steps text;
 
 -- External leads from Make.com may not have an idea description
-ALTER TABLE public.registrations ALTER COLUMN idea_description DROP NOT NULL;
+-- Also add the column if it does not exist yet (live DB may differ from migration files)
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS idea_description text;
+DO $$ BEGIN
+  ALTER TABLE public.registrations ALTER COLUMN idea_description DROP NOT NULL;
+EXCEPTION WHEN others THEN NULL;
+END $$;
 
 -- Indexes for common CRM queries
 CREATE INDEX IF NOT EXISTS idx_registrations_source ON public.registrations(source);
